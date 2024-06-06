@@ -1,0 +1,90 @@
+#include <stdio.h>
+#include <stdlib.h>
+#define SALIR 3
+#define MAX_NOMBRE 25
+
+typedef enum {
+    Blanco,
+    Negro,
+    Azul,
+    Rojo,
+    Verde
+} Color_t;
+
+typedef struct Zapatilla {
+    char Nombre[MAX_NOMBRE];
+    char Marca;
+    float Talle;
+    Color_t Color;
+    struct Zapatilla *next;
+} Zapatilla_t;
+
+Zapatilla_t *calzado = NULL;
+
+void imprimir_zapatilla(Zapatilla_t *calzado);
+void pedir_datos(Zapatilla_t *calzado);
+void menu(void);
+void cargar_zapatilla(void);
+void ver_lista(void);
+void liberar_memoria(void);
+
+int main() {
+    menu();
+    liberar_memoria();
+    return 0;
+}
+
+void imprimir_zapatilla(Zapatilla_t *calzado) {
+    printf("Nombre: %s\n", calzado->Nombre);
+    printf("Talle: %.2f\n", calzado->Talle);
+    printf("----------------------\n");
+}
+
+void pedir_datos(Zapatilla_t *calzado) {
+    printf("Ingrese el nombre del calzado:\n");
+    scanf("%s", calzado->Nombre);
+    printf("Ingrese el talle del calzado:\n");
+    scanf("%f", &(calzado->Talle));
+}
+
+void menu(void) {
+    int opcion;
+    do {
+        printf("1_Cargar una nueva zapatilla\n");
+        printf("2_Ver todas las zapatillas cargadas\n");
+        printf("3_Salir\n");
+        scanf("%d", &opcion);
+        if (opcion == 1)
+            cargar_zapatilla();
+        else if (opcion == 2)
+            ver_lista();
+    } while (opcion != SALIR);
+}
+
+void cargar_zapatilla() {
+    Zapatilla_t *zapatilla_aux = malloc(sizeof(Zapatilla_t));
+    if (zapatilla_aux == NULL) {
+        printf("Sin memoria\n");
+    } else {
+        pedir_datos(zapatilla_aux);
+        zapatilla_aux->next = calzado;
+        calzado = zapatilla_aux;
+    }
+}
+
+void ver_lista(void) {
+    Zapatilla_t *lista = calzado;
+    while (lista != NULL) {
+        imprimir_zapatilla(lista);
+        lista = lista->next;
+    }
+}
+
+void liberar_memoria(void) {
+    Zapatilla_t *aux = NULL;
+    while (calzado != NULL) {
+        aux = calzado;
+        calzado = calzado->next;
+        free(aux);
+    }
+}
