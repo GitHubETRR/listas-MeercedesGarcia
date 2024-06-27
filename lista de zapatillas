@@ -36,7 +36,7 @@ int main() {
 
 void imprimir_zapatilla(Zapatilla_t *calzado) {
     printf("Nombre: %s\n", calzado->Nombre);
-    printf("Talle: %.2f\n", calzado->Talle);
+    printf("Talle: %f\n", calzado->Talle);
     printf("----------------------\n");
 }
 
